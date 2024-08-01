@@ -1,0 +1,3 @@
+ROOT_FACEKNOWLEDGE_DATABASE = 'knowledge_database'
+CASE_REGISTER = 'r'
+CASE_VERIFICATION = 'v'
