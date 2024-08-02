@@ -2,7 +2,7 @@
 import os
 import cv2
 import numpy as np
-from helper import ROOT_FACEKNOWLEDGE_DATABASE
+from helper import ROOT_FACEKNOWLEDGE_DATABASE, crop_image
 from face_detection import FaceDetection
 from face_embedding import FaceEmbedding
 
@@ -24,19 +24,7 @@ class FaceKnowledgeFormation():
             image_face = cv2.imread(image_paths[idx])
             # if face detected on the image
             if result.boxes is not None:
-                # bounding boxes coordinate (left, top, right, bottom)
-                boxes = result.boxes.xyxy
-                # only crop the largest face area
-                final_box = boxes[0]
-                for box in boxes:
-                    x1, y1, x2, y2 = map(int, box)
-                    area_box = (x2 - x1) * (y2 - y1)
-                    area_final_box = (final_box[2] - final_box[0]) * (final_box[3] - final_box[1])
-                    # compare the bounding box area
-                    if area_box > area_final_box:
-                        final_box = box
-                # crop the image with padding
-                image_face_crop = image_face[int(final_box[1] - 50):int(final_box[3] + 25), int(final_box[0] - 50):int(final_box[2] + 50)]
+                image_face_crop = crop_image(result, image_face)
                 print(f'Face detected on image: {image_paths[idx]}')
                 face_embedding = self.face_embedding.embedding_face(image_face_crop)
                 person_face_knowledge.append(face_embedding)

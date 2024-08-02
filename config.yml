@@ -1,2 +1,3 @@
 face_detection_model: "models/face_detection_yolov8s.pt"
 embedding_model: "models/face_embedding"
+matching_thres : 0.97
