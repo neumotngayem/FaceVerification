@@ -28,16 +28,16 @@ class FaceVerification():
                 print(f'--------- Compare with {person_name} ---------')
                 for face_stored_embedding in registerd_face_embedding:
                     similarity_percentage = cosine_similarity(face_embedding.reshape(1, -1), face_stored_embedding.reshape(1, -1))
-                    cosine_similarity_list.append(similarity_percentage)
-                    print(f'Similarity percentage: {similarity_percentage}%')  
+                    cosine_similarity_list.append(similarity_percentage[0][0])
+                    print(f'Similarity percentage: {similarity_percentage}')  
                 avg_cosine_similarity = np.average(cosine_similarity_list)
-                print(f'Average similarity percentage: {similarity_percentage}%')
+                print(f'Average similarity percentage: {avg_cosine_similarity}')
                 # Take the most similarity person
                 if avg_cosine_similarity > self.matching_threshold and avg_cosine_similarity > found_similarity_percentage:
                     found_person = person_name
                     found_similarity_percentage = avg_cosine_similarity
                     print(" ****** Matched ******")
-            return found_person, found_similarity_percentage
+            return found_person, float(found_similarity_percentage)
         print('No face registered yet!')
         return None, -1
                 

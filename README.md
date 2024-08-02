@@ -1,16 +1,28 @@
-
 # Face Verification
 
-Step 1: Create models folder
+**Step 1**: Create models folder
 
-Step 2: Download models following this link and put into models folder:
+**Step 2**: Download models following this link and put into models folder:
 https://drive.google.com/drive/folders/1oOh45sI7HCWvlC7JzbpFcK5JQ81jg2Gc?usp=drive_link
 
+# CLI
 
-Step 3: For registering the face:
+For registering the face:
 
+```
 python main.py -t r -p {image_folder_path} -n {name}
+```
 
-Step 4: For verify the face:
+For verify the face:
 
+```
 python main.py -t v -p {image_path}
+```
+
+# API
+
+Starting API server:
+
+```
+fastapi dev main_api.py
+```
