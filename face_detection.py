@@ -11,5 +11,8 @@ class FaceDetection():
     def detect_multiple_images(self, image_paths):
         return self.face_detection_model(image_paths)
     
-    def detect_single_image(self, image_path):
-        return self.face_detection_model(image_path)[0]
+    def detect_single_image(self, image_path, save_image_path=None):
+        detection_result = self.face_detection_model(image_path)[0]
+        if save_image_path:
+            detection_result.save(filename=save_image_path)  # save to disk
+        return detection_result

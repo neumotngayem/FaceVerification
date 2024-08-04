@@ -5,15 +5,16 @@ from config import Config
 from face_detection import FaceDetection
 from face_embedding import FaceEmbedding
 from sklearn.metrics.pairwise import cosine_similarity
-from helper import ROOT_FACEKNOWLEDGE_DATABASE, crop_image
+from helper import DETECTION_OUTPUT_FILENAME, ROOT_FACEKNOWLEDGE_DATABASE, crop_image
 
 class FaceVerification():
-    def __init__(self):
+    def __init__(self, request_time):
         self.db_folder = ROOT_FACEKNOWLEDGE_DATABASE
         self.face_detection = FaceDetection()
         self.face_embedding = FaceEmbedding()
         self.config = Config().parse_config()
         self.matching_threshold = float(self.config['matching_thres'])
+        self.request_time = request_time
         
     def finding_in_database(self, face_embedding):
         if os.path.isdir(self.db_folder):
@@ -43,7 +44,8 @@ class FaceVerification():
                 
     def verification(self, image_path):
         image_face = cv2.imread(image_path)
-        result = self.face_detection.detect_single_image(image_face)
+        save_image_path = os.path.join(self.config['temp_uploading_folder'], str(self.request_time), DETECTION_OUTPUT_FILENAME)
+        result = self.face_detection.detect_single_image(image_face, save_image_path)
         if result.boxes is not None:
             image_face_crop = crop_image(result, image_face)
             print(f'Face detected on image: {image_path}')

@@ -1,6 +1,7 @@
 ROOT_FACEKNOWLEDGE_DATABASE = 'knowledge_database'
 CASE_REGISTER = 'r'
 CASE_VERIFICATION = 'v'
+DETECTION_OUTPUT_FILENAME = 'detection_output.jpg'
 
 def crop_image(yolo_result, image_face):
     # bounding boxes coordinate (left, top, right, bottom)
