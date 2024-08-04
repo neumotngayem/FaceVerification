@@ -7,10 +7,18 @@ import shutil
 from face_knowledge_formation import FaceKnowledgeFormation
 from face_verification import FaceVerification
 from helper import DETECTION_OUTPUT_FILENAME
-
+from fastapi.middleware.cors import CORSMiddleware
 config = Config().parse_config()
 app = FastAPI()
+origins = ["*"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.post("/register")
 async def face_register(files: list[UploadFile], person_name: str = Form()):
     try:
@@ -33,7 +41,7 @@ async def face_register(files: list[UploadFile], person_name: str = Form()):
        return {"message": e.args}
     
 @app.post("/verification")
-async def face_register(file: UploadFile):
+async def verification(file: UploadFile):
     try:
         request_time = float(time.time())
         temporal_folder = os.path.join(config['temp_uploading_folder'], str(request_time))
@@ -48,7 +56,7 @@ async def face_register(file: UploadFile):
         with open(detection_output_path, "rb") as imagefile:
             base64_detection_image = base64.b64encode(imagefile.read())
         return_data = {"person_name": found_person, "similarity_percentage": found_similarity_percentage, "base64_detection_image": base64_detection_image}
-        shutil.rmtree(temporal_folder)
+        #shutil.rmtree(temporal_folder)
         return {"message": "Face verification successfully", "data": return_data}
     except Exception as e:
         return {"message": e.args}
