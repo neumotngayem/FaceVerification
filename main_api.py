@@ -56,7 +56,7 @@ async def verification(file: UploadFile):
         with open(detection_output_path, "rb") as imagefile:
             base64_detection_image = base64.b64encode(imagefile.read())
         return_data = {"person_name": found_person, "similarity_percentage": found_similarity_percentage, "base64_detection_image": base64_detection_image}
-        #shutil.rmtree(temporal_folder)
+        shutil.rmtree(temporal_folder)
         return {"message": "Face verification successfully", "data": return_data}
     except Exception as e:
         return {"message": e.args}
